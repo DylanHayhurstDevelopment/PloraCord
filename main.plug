@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Plora</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      line-height: 1.6;
+      background: #0f0f11;
+      color: #e0e0e5;
+    }
+    h1 {
+      color: #00c4ff;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 2.4rem;
+    }
+    .container {
+      background: #16181d;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      border: 1px solid #2a2e38;
+      text-align: center;
+    }
+    p {
+      margin: 1rem 0;
+      color: #b0b0c0;
+    }
+    .mono {
+      font-family: 'Courier New', monospace;
+      background: #1e1e24;
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      color: #a5d6ff;
+    }
+    button {
+      margin-top: 1.8rem;
+      padding: 0.9rem 2.2rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: white;
+      background: linear-gradient(135deg, #0066ff, #00aaff);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0, 120, 255, 0.4);
+    }
+    button:active {
+      transform: translateY(1px);
+    }
+    button:focus {
+      outline: 3px solid #00c4ff;
+      outline-offset: 4px;
+    }
+    button:disabled {
+      background: #444;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    .status {
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      min-height: 1.4em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Welcome to Plora</h1>
+  <p>An open alternative to <span class="mono">Vencord</span></p>
+
+  <p>
+    Plora aims to bring similar client modifications, plugins, themes<br>
+    and quality-of-life improvements to Discord — but with its own approach.
+  </p>
+
+  <p>Give it a try and customize your Discord experience!</p>
+
+  <button id="enableBtn">Enable Plora</button>
+
+  <div class="status" id="status"></div>
+</div>
+
+<!-- The original script src – commented out because it 404s / doesn't exist -->
+<!-- <script src="https://cdn.jsdelivr.net/gh/Plora-Development/Plora@main/dist/PloraLoader.js"></script> -->
+
+<script>
+  const btn = document.getElementById('enableBtn');
+  const status = document.getElementById('status');
+
+  function updateStatus(message, color = '#b0b0c0') {
+    status.textContent = message;
+    status.style.color = color;
+  }
+
+  function enablePlora() {
+    if (typeof window.enablePlora === 'function') {
+      window.enablePlora();
+      updateStatus("Plora injection started… (check Discord console for logs/errors)", '#88ff88');
+      btn.disabled = true; // prevent multiple clicks
+    } else {
+      updateStatus(
+        "Plora loader is not available (script failed to load or project not found). " +
+        "Try Vencord instead: https://vencord.dev",
+        '#ff5555'
+      );
+    }
+  }
+
+  btn.addEventListener('click', enablePlora);
+
+  // Enter key support when button is focused
+  btn.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === '13') {
+      e.preventDefault();
+      enablePlora();
+    }
+  });
+
+  // Optional: auto-focus
+  btn.focus();
+
+  // Initial status (more helpful than blank)
+  updateStatus("Click the button to enable (note: Plora does not appear to be a released project yet)", '#ffcc00');
+
+  // If you want to mock/test locally without a real loader, uncomment and adapt this:
+  /*
+  window.enablePlora = function() {
+    console.log("Mock Plora injection running...");
+    alert("Plora (mock mode) enabled — nothing actually changed.");
+    updateStatus("Mock injection complete!", '#88ff88');
+  };
+  updateStatus("Using mock Plora loader for testing", '#88ff88');
+  */
+</script>
+
+</body>
+</html>
